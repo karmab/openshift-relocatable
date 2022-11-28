@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: relocatable
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: relocatable-cluster-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: relocatable
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: relocate-pod
+  namespace: relocatable
+  labels:
+    app: relocatable
+spec:
+  containers:
+  - name: deploy
+    image: quay.io/karmab/openshift-relocatable:latest
+    command:
+    - "/bin/bash"
+    - "/root/deploy.sh"
+    env:
+    - name: REGISTRY
+      value: "true"
+    - name: API_PUBLIC_IP
+      value: "192.168.122.243"
+    - name: INGRESS_PUBLIC_IP
+      value: "192.168.122.242"

@@ -1,0 +1,39 @@
+cluster: ztpfw
+domain: karmalabs.corp
+network_type: OVNKubernetes
+masters: 3
+workers: 0
+version: stable
+tag: 4.11
+numcpus: 16
+master_memory: 28672
+worker_memory: 28672
+bootstrap_memory: 8192
+disk_size: 40
+baremetal_cidr: 192.168.7.0/24
+api_ip: 192.168.7.253
+ingress_ip: 192.168.7.252
+extra_disks:
+- 100
+apps:
+- metallb-operator
+apps_install_cr: false
+nic: br-ex
+netmask: 24
+vmrules:
+- ztpfw-bootstrap:
+   ip: 192.168.7.9
+   nic: ens3
+- ztpfw-master-0:
+   ip: 192.168.7.10
+- ztpfw-master-1:
+   ip: 192.168.7.11
+- ztpfw-master-2:
+   ip: 192.168.7.12
+files:
+- origin: static-ip.sh
+  path: /usr/local/bin/static-ip.sh
+  mode: 700
+  currentdir: true
+- origin: static-ip.service
+  currentdir: true

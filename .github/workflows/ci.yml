@@ -1,0 +1,21 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  run-workflow:
+    name: CI workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: sudo .github/prep.sh
+        shell: bash
+      - name: Build and Push Container
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: ./.github/container.sh
+        shell: bash
+        env:
+         QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+         QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}

@@ -1,0 +1,67 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: api-public-ip
+  namespace: openshift-operators
+spec:
+  addresses:
+  - $API_PUBLIC_IP-$API_PUBLIC_IP
+  autoAssign: false
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: ingress-public-ip
+  namespace: openshift-operators
+spec:
+  addresses:
+  - $INGRESS_PUBLIC_IP-$INGRESS_PUBLIC_IP
+  autoAssign: false
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: ztpfw-advertisements
+  namespace: openshift-operators
+spec:
+  ipAddressPools:
+  - api-public-ip
+  - ingress-public-ip
+---
+kind: Service
+apiVersion: v1
+metadata:
+  annotations:
+    metallb.universe.tf/address-pool: api-public-ip
+  name: metallb-api
+  namespace: openshift-kube-apiserver
+spec:
+  ports:
+  - name: http
+    protocol: TCP
+    port: 6443
+    targetPort: 6443
+  selector:
+    app: openshift-kube-apiserver
+  type: LoadBalancer
+---
+kind: Service
+apiVersion: v1
+metadata:
+  annotations:
+    metallb.universe.tf/address-pool: ingress-public-ip
+  name: metallb-ingress
+  namespace: openshift-ingress
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 443
+  selector:
+    ingresscontroller.operator.openshift.io/deployment-ingresscontroller: default
+  type: LoadBalancer

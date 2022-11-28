@@ -1,0 +1,14 @@
+# /etc/systemd/system/static-ip.service
+[Unit]
+{% if 'bootstrap' in name %}
+Wants=network-online.target
+After=network-online.target
+{% else %}
+After=network.target ovs-configuration.service
+Before=network-online.target kubelet.service crio.service
+{% endif %}
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/static-ip.sh
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,11 @@
+apiVersion: mirror.openshift.io/v1alpha2
+kind: ImageSetConfiguration
+storageConfig:
+  registry:
+    imageURL: $REGISTRY_NAME/openshift/release/metadata:latest
+mirror:
+  operators:
+  - catalog: registry.redhat.io/redhat/redhat-operator-index:v${OCP_RELEASE}
+    packages:
+    - name: metallb-operator
+    - name: ptp-operator

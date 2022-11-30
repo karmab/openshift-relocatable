@@ -24,6 +24,7 @@ metadata:
   labels:
     app: relocatable
 spec:
+  restartPolicy: Never
   containers:
   - name: deploy
     image: quay.io/karmab/openshift-relocatable:latest

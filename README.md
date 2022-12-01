@@ -27,13 +27,14 @@ We can create a cluster fulfilling those requirements on libvirt using kcli
 # openshift sdn two nics
 
 ```
-kcli create network -c 192.168.7.0 -i ztpfw
+kcli create network -c 192.168.7.0 ztpfw
 kcli create cluster openshift --pf params_sdn_2nics.yml ztpfw
 ```
+
 ## ovn two nics
 
 ```
-kcli create network -c 192.168.7.0 -i ztpfw
+kcli create network -c 192.168.7.0/24 ztpfw
 kcli create cluster openshift --pf params_sdn_2nics.yml ztpfw
 ```
 
@@ -57,7 +58,9 @@ The following steps are needed:
   - Create a L2 advertisement for those pools.
   - Create two loadbalancer based services for each kind of traffic.
   
- You can find different numbered scripts covering those tasks.
+You can find different numbered scripts covering those tasks.
+
+Alternatively, you can run the steps by editing the [relocatable pod env variable](relocatable-pod.yaml) to match your environment and run the pod
 
 ## Relocation simulation
 

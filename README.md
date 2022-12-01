@@ -18,21 +18,30 @@ The cluster needs the following requisites to support relocation:
 - Api and ingress to be available through the private network (For instance by having vips).
 - Metallb operator deployed.
 - For production usage, proper DNS records as per the official documentation in place pointing to ingress and api public ips.
+- Storage if planning to deploy embedded registry
+
+## Using kcli to deploy base cluster (Optional)
 
 We can create a cluster fulfilling those requirements on libvirt using kcli
 
-If using two nics,
+# openshift sdn two nics
 
 ```
 kcli create network -c 192.168.7.0 -i ztpfw
-kcli create cluster openshift --pf params_sdn.yml ztpfw
+kcli create cluster openshift --pf params_sdn_2nics.yml ztpfw
+```
+## ovn two nics
+
+```
+kcli create network -c 192.168.7.0 -i ztpfw
+kcli create cluster openshift --pf params_sdn_2nics.yml ztpfw
 ```
 
-If using a single nic with ovn
+# ovn single nic
 
 ```
 ip addr add 192.168.7.1/24 dev virbr0
-kcli create cluster openshift --pf params_ovn.yml ztpfw
+kcli create cluster openshift --pf params_ovn_1nic.yml ztpfw
 ```
 
 ## Relocation preparation
@@ -40,7 +49,7 @@ kcli create cluster openshift --pf params_ovn.yml ztpfw
 The following steps are needed:
 
 - When the new location doesn't have internet access:
-  - Deploy a disconnected registry within the cluster if the new location doesnt have internet access.
+  - Deploy a disconnected registry within the cluster
   - Mirror openshift and olm content.
   - Create imagecontentsourcepolicies so that the cluster points to itself for content.
 - Set metallb to access api and ingress from outside the cluster:

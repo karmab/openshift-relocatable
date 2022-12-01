@@ -1,6 +1,6 @@
 cluster: ztpfw
 domain: karmalabs.corp
-#network_type: OVNKubernetes
+network_type: OVNKubernetes
 masters: 3
 workers: 0
 version: stable
@@ -13,10 +13,9 @@ disk_size: 40
 baremetal_cidr: 192.168.7.0/24
 api_ip: 192.168.7.253
 ingress_ip: 192.168.7.252
-extra_disks:
-- 100
 apps:
 - metallb-operator
+- nfs
 apps_install_cr: false
 vmrules:
 - ztpfw-bootstrap:
@@ -24,22 +23,26 @@ vmrules:
    - name: ztpfw 
      ip: 192.168.7.9
      netmask: 24
+     gateway: 192.168.7.1
    - default
 - ztpfw-master-0:
    nets:
    - name: ztpfw 
      ip: 192.168.7.10
      netmask: 24
+     gateway: 192.168.7.1
    - default
 - ztpfw-master-1:
    nets:
    - name: ztpfw 
      ip: 192.168.7.11
      netmask: 24
+     gateway: 192.168.7.1
    - default
 - ztpfw-master-2:
    nets:
    - name: ztpfw 
      ip: 192.168.7.12
      netmask: 24
+     gateway: 192.168.7.1
    - default

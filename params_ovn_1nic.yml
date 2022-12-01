@@ -13,10 +13,9 @@ disk_size: 40
 baremetal_cidr: 192.168.7.0/24
 api_ip: 192.168.7.253
 ingress_ip: 192.168.7.252
-extra_disks:
-- 100
 apps:
 - metallb-operator
+- nfs
 apps_install_cr: false
 nic: br-ex
 netmask: 24

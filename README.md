@@ -24,21 +24,21 @@ The cluster needs the following requisites to support relocation:
 
 We can create a cluster fulfilling those requirements on libvirt using kcli
 
-# openshift sdn two nics
+### openshift sdn two nics
 
 ```
 kcli create network -c 192.168.7.0 ztpfw
 kcli create cluster openshift --pf params_sdn_2nics.yml ztpfw
 ```
 
-## ovn two nics
+### ovn two nics
 
 ```
 kcli create network -c 192.168.7.0/24 ztpfw
 kcli create cluster openshift --pf params_sdn_2nics.yml ztpfw
 ```
 
-# ovn single nic
+### ovn single nic
 
 ```
 ip addr add 192.168.7.1/24 dev virbr0
@@ -60,7 +60,7 @@ The following steps are needed:
   
 You can find different numbered scripts covering those tasks.
 
-Alternatively, you can run the steps by editing the [relocatable pod env variable](relocatable-pod.yaml) to match your environment and run the pod
+Alternatively, you can run the steps by editing the env variables in the [relocate pod spec](relocate.yaml) to match your environment and run it.
 
 ## Relocation simulation
 

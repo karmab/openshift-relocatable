@@ -1,4 +1,4 @@
-cluster: ztpfw
+cluster: relocate
 domain: karmalabs.corp
 #network_type: OVNKubernetes
 masters: 3
@@ -18,29 +18,29 @@ apps:
 - nfs
 apps_install_cr: false
 vmrules:
-- ztpfw-bootstrap:
+- relocate-bootstrap:
    nets:
-   - name: ztpfw 
+   - name: relocate 
      ip: 192.168.7.9
      netmask: 24
    - default
-- ztpfw-master-0:
+- relocate-master-0:
    nets:
-   - name: ztpfw 
+   - name: relocate 
      ip: 192.168.7.10
      netmask: 24
      dns: 192.168.7.10
    - default
-- ztpfw-master-1:
+- relocate-master-1:
    nets:
-   - name: ztpfw 
+   - name: relocate 
      ip: 192.168.7.11
      netmask: 24
      dns: 192.168.7.11
    - default
-- ztpfw-master-2:
+- relocate-master-2:
    nets:
-   - name: ztpfw 
+   - name: relocate 
      ip: 192.168.7.12
      netmask: 24
      dns: 192.168.7.12

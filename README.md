@@ -27,22 +27,22 @@ We can create a cluster fulfilling those requirements on libvirt using kcli
 ### openshift sdn two nics
 
 ```
-kcli create network -c 192.168.7.0 ztpfw
-kcli create cluster openshift --pf params_sdn_2nics.yml ztpfw
+kcli create network -c 192.168.7.0 relocate
+kcli create cluster openshift --pf params_sdn_2nics.yml relocate
 ```
 
 ### ovn two nics
 
 ```
-kcli create network -c 192.168.7.0/24 ztpfw
-kcli create cluster openshift --pf params_sdn_2nics.yml ztpfw
+kcli create network -c 192.168.7.0/24 relocate
+kcli create cluster openshift --pf params_sdn_2nics.yml relocate
 ```
 
 ### ovn single nic
 
 ```
 ip addr add 192.168.7.1/24 dev virbr0
-kcli create cluster openshift --pf params_ovn_1nic.yml ztpfw
+kcli create cluster openshift --pf params_ovn_1nic.yml relocate
 ```
 
 ## Relocation preparation

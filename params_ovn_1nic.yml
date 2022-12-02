@@ -1,4 +1,4 @@
-cluster: ztpfw
+cluster: relocate
 domain: karmalabs.corp
 network_type: OVNKubernetes
 masters: 3
@@ -20,14 +20,14 @@ apps_install_cr: false
 nic: br-ex
 netmask: 24
 vmrules:
-- ztpfw-bootstrap:
+- relocate-bootstrap:
    ip: 192.168.7.9
    nic: ens3
-- ztpfw-master-0:
+- relocate-master-0:
    ip: 192.168.7.10
-- ztpfw-master-1:
+- relocate-master-1:
    ip: 192.168.7.11
-- ztpfw-master-2:
+- relocate-master-2:
    ip: 192.168.7.12
 files:
 - origin: static-ip.sh

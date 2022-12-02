@@ -31,6 +31,7 @@ vmrules:
      ip: 192.168.7.10
      netmask: 24
      gateway: 192.168.7.1
+     dns: 192.168.7.10
    - default
 - ztpfw-master-1:
    nets:
@@ -38,6 +39,7 @@ vmrules:
      ip: 192.168.7.11
      netmask: 24
      gateway: 192.168.7.1
+     dns: 192.168.7.11
    - default
 - ztpfw-master-2:
    nets:
@@ -45,4 +47,5 @@ vmrules:
      ip: 192.168.7.12
      netmask: 24
      gateway: 192.168.7.1
+     dns: 192.168.7.12
    - default

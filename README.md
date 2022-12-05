@@ -13,7 +13,7 @@ The cluster needs the following requisites to support relocation:
       - Creating machine configs to create /etc/sysconfig/network-scripts/ifcfg files when using an UPI based approach.
       - Leveraging static networking support in baremetal IPI.
       - Nmstate configs when using ZTP.
-    - Reusing the public nic to also host the private ip. With OVN, this will require a systemd unit to add the configuration after br-ex bridge is set and before crio and kubelet start
+    - Reusing the public nic to also host the private ip. With OVN, this will require a systemd unit to add the configuration after br-ex bridge is set and before crio and kubelet start. We do this by launching the nodes with two extra kernel arguments relocateip and relocatenetmask and using [a machineconfig](relocatemanifests/relocate-ip.yml)
 - Kubelet to use the corresponding static ip. For this, a machine config creating the file `/etc/default/nodeip-configuration` with content such as `KUBELET_NODEIP_HINT=192.168.7.0` can be injected.
 - Api and ingress to be available through the private network (For instance by having vips).
 - Metallb operator deployed.

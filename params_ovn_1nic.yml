@@ -1,6 +1,7 @@
 cluster: relocate
 domain: karmalabs.corp
 network_type: OVNKubernetes
+manifests: relocatemanifests
 masters: 3
 workers: 0
 version: stable
@@ -17,22 +18,14 @@ apps:
 - metallb-operator
 - nfs
 apps_install_cr: false
-nic: br-ex
-netmask: 24
 vmrules:
 - relocate-bootstrap:
-   ip: 192.168.7.9
-   nic: ens3
+   cmds:
+   - nmcli connection modify "Wired connection 1" +ipv4.addresses 192.168.7.9/24 ipv4.method auto
+   - nmcli dev reapply ens3
 - relocate-master-0:
-   ip: 192.168.7.10
+   cmdline: relocateip=192.168.7.10 relocatenetmask=24
 - relocate-master-1:
-   ip: 192.168.7.11
+   cmdline: relocateip=192.168.7.11 relocatenetmask=24
 - relocate-master-2:
-   ip: 192.168.7.12
-files:
-- origin: static-ip.sh
-  path: /usr/local/bin/static-ip.sh
-  mode: 700
-  currentdir: true
-- origin: static-ip.service
-  currentdir: true
+   cmdline: relocateip=192.168.7.12 relocatenetmask=24

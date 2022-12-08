@@ -1,0 +1,71 @@
+name: deploy-cluster
+
+on:
+  workflow_dispatch:
+    inputs:
+      CLUSTER:
+        description: 'Cluster Name'
+        required: true
+        default: relocate
+      NODES:
+        description: 'Nodes'
+        required: true
+        default: 3
+      PULLSECRET:
+        description: 'Pull Secret'
+        required: false
+        default: /root/openshift_pull.json
+      PARAMFILE:
+        description: 'paramfile'
+        required: false
+        default: aicli_parameters.yml
+      EXTRAPARAMS:
+        description: 'Extra params'
+        default: ''
+
+env:
+ HOME: /root
+ PYTHONUNBUFFERED: true
+ CLUSTER: ${{github.event.inputs.CLUSTER}}
+ NODES: ${{github.event.inputs.NODES}}
+ PULLSECRET: ${{github.event.inputs.PULLSECRET}}
+ PARAMFILE: ${{github.event.inputs.PARAMFILE}}
+ EXTRAPARAMS: ${{github.event.inputs.EXTRAPARAMS}}
+ AI_OFFLINETOKEN: ${{ secrets.AI_OFFLINETOKEN }}
+# CLUSTER: ai-ci
+# PULLSECRET: /root/openshift_pull.json
+# PARAMFILE: .github/aicli_parameters.yml
+
+jobs:
+    requirements:
+      runs-on: libvirt
+      steps:
+       - uses: actions/checkout@v2
+       - run: git pull origin ${GITHUB_REF##*/}
+       - name: Install kcli
+         run: |
+           curl https://raw.githubusercontent.com/karmab/kcli/master/install.sh | bash
+       - name: Install aicli
+         run: |
+           pip3 install -U assisted-service-client aicli
+       - name: Clean up
+         continue-on-error: true
+         run: |
+           kcli delete plan --yes $CLUSTER || true
+           aicli delete cluster $CLUSTER || true
+
+    deploy-kcli-plan:
+      needs: requirements
+      runs-on: libvirt
+      steps:
+      - name: Deploy kcli plan
+        run: |
+          kcli create plan -P nodes=$NODES $EXTRAPARAMS $CLUSTER
+
+    deploy-ai-cluster:
+      needs: deploy-kcli-plan
+      runs-on: libvirt
+      steps:
+      - name: Deploy ai cluster
+        run: |
+          aicli create deployment --pf $PARAMFILE -P pull_secret=$PULLSECRET $EXTRAPARAMS $CLUSTER --force

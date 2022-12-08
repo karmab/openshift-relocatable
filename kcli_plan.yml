@@ -1,11 +1,11 @@
 parameters:
- cluster: loco2
+ cluster: relocatable
  nodes: 3
  network: default
- memory: 20480
+ memory: 40960
  numcpus: 16
- disk_size: 200
- mac_prefix: bb:bb:bb:bb:dd
+ disk_size: 100
+ mac_prefix: aa:aa:aa:aa:dd
 
 {% for num in range(0,nodes) %}
 {{ cluster }}-node-{{ num }}:
@@ -15,6 +15,7 @@ parameters:
  uefi: true
  start: false
  disks:
+ - {{ disk_size }}
  - {{ disk_size }}
  nets:
  - name: {{ network }}

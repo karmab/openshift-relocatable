@@ -2,50 +2,42 @@ This repo contains scripts to illustrate how to create a relocatable cluster and
 
 ## Base cluster
 
-The cluster needs the following requisites to support relocation:
+The cluster will use a private network cidr (Our example uses 192.168.7.0/24) and two public vips, one for public api traffic and the other for public ingress.
 
-- A dedicated private network (Our example uses 192.168.7.0/24).
-- A public network with two reserved ips, one to be used for public api traffic and the other for public ingress.
-- a Given number of nodes with:
-  - A nic on the public network.
-  - Either:
-    - A dedicated nic configured with private ip. This can be achieved in different ways:
-      - Creating machine configs to create /etc/sysconfig/network-scripts/ifcfg files when using an UPI based approach.
-      - Leveraging static networking support in baremetal IPI.
-      - Nmstate configs when using ZTP.
-    - Reusing the public nic to also host the private ip. With OVN, this will require a systemd unit to add the configuration after br-ex bridge is set and before crio and kubelet start. We do this by launching the nodes with two extra kernel arguments relocateip and relocatenetmask and using [a machineconfig](relocatemanifests/relocate-ip.yml)
-- Kubelet to use the corresponding static ip. For this, a machine config creating the file `/etc/default/nodeip-configuration` with content such as `KUBELET_NODEIP_HINT=192.168.7.0` can be injected.
-- Api and ingress to be available through the private network (For instance by having vips).
-- Metallb operator deployed.
-- For production usage, proper DNS records as per the official documentation in place pointing to ingress and api public ips.
-- Storage if planning to deploy embedded registry
+For all the nodes of the cluster, we:
 
-## Using kcli to deploy base cluster (Optional)
+- set a static with the private cidr on top of the default nic. This is achieved with a systemd unit that adds the configuration after br-ex bridge is set and before crio and kubelet start. Each node is launched with extra kernel arguments, `relocateip` and `relocatenetmask` and a [a machineconfig](10-relocate-ip.yml) that leverages script `relocate-ip.sh`
+- configure kubelet to use the corresponding static ip. For this, a machine config creating the file `/etc/default/nodeip-configuration` with content such as `KUBELET_NODEIP_HINT=192.168.7.0` can be injected.
+- set api vip and ingress vip using the private cidr
+- deploy metallb operator deployed and configure two services using public vips pointing to api and ingress
+- optionally deploy an embedded registry using storage on the node (typically odf or lvmo)
 
-We can create a cluster fulfilling those requirements on libvirt using kcli
+For production usage, proper DNS records as per the official documentation need to be pointing to ingress and api public ips.
 
-### openshift sdn two nics
+## Deploying with aicli/kcli (Optional)
 
-```
-kcli create network -c 192.168.7.0 relocate
-kcli create cluster openshift --pf params_sdn_2nics.yml relocate
-```
+### kcli
 
-### ovn two nics
-
-```
-kcli create network -c 192.168.7.0/24 relocate
-kcli create cluster openshift --pf params_sdn_2nics.yml relocate
-```
-
-### ovn single nic
+We can create a cluster fulfilling those requirements on libvirt using kcli only for testing purposes. We need a temporary ip on default bridge to be able to communicate with the private cidr.
 
 ```
 ip addr add 192.168.7.1/24 dev virbr0
-kcli create cluster openshift --pf params_ovn_1nic.yml relocate
+kcli create cluster openshift --pf params_kcli.yml relocate
+
+```
+Note that for relocating such a virtual cluster, masters would have to been exported/imported.
+
+### aicli
+
+Support for relocation is present in aicli so we can deploy such a cluster with a parameter file such as [this one](aicli_parameters.yml) and optionally creating vms first 
+
+```
+kcli create plan -f aicli_kcli_plan.yml
+aicli create deployment --pf aicli_parameters.yml relocate
+
 ```
 
-## Relocation preparation
+## Manual Relocation steps
 
 The following steps are needed:
 
@@ -62,7 +54,7 @@ You can find different numbered scripts covering those tasks.
 
 Alternatively, you can run the steps by editing the env variables in the [relocate pod spec](relocate.yaml) to match your environment and run it.
 
-## Relocation simulation
+### Relocation simulation
 
 After network for the public interfaces has changed, the cluster should still be accessible using the 192.168.7.0/24.
 

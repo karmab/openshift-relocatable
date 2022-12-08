@@ -8,4 +8,5 @@ mirror:
   - catalog: registry.redhat.io/redhat/redhat-operator-index:v${OCP_RELEASE}
     packages:
     - name: metallb-operator
-    - name: ptp-operator
+    - name: odf-operator
+#    - name: odf-lvm-operator

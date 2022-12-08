@@ -3,8 +3,8 @@ relocate: true
 relocate_switch: true
 relocate_registry: true
 minimal: true
-api_vip: 192.168.122.253
-ingress_vip: 192.168.122.252
+api_ip: 192.168.122.253
+ingress_ip: 192.168.122.252
 hosts:
 - name: relocate-master-0
   role: master

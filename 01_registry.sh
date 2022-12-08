@@ -14,3 +14,5 @@ oc create ns registry
 oc create secret tls registry-certs --cert=$BASEDIR/certs/domain.crt --key=$BASEDIR/certs/domain.key -n registry
 oc create secret generic registry-auth --from-file=$BASEDIR/auth/htpasswd -n registry
 oc create -f 01_registry.yml
+REGISTRY_POD=$(oc -n registry get pod  -l app=registry -o name)
+oc wait -n registry --for=condition=Ready $REGISTRY_POD

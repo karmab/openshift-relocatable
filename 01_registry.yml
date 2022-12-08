@@ -14,18 +14,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run: registry
+    app: registry
   name: registry
   namespace: registry
 spec:
   replicas: 1
   selector:
     matchLabels:
-      run: registry
+      app: registry
   template:
     metadata:
       labels:
-        run: registry
+        app: registry
     spec:
       containers:
       - name: registry
@@ -77,7 +77,7 @@ metadata:
   namespace: registry
 spec:
   selector:
-    run: registry
+    app: registry
   ports:
     - name: registry
       protocol: TCP

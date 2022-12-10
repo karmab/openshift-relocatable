@@ -1,7 +1,5 @@
 base_dns_domain: karmalabs.corp
 relocate: true
-relocate_switch: true
-relocate_registry: true
 minimal: true
 api_ip: 192.168.122.253
 ingress_ip: 192.168.122.252

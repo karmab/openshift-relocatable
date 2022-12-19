@@ -3,6 +3,10 @@ name: deploy-cluster
 on:
   workflow_dispatch:
     inputs:
+      CLIENT:
+        description: 'Client name'
+        required: true
+        default: 'local'
       CLUSTER:
         description: 'Cluster Name'
         required: true
@@ -26,6 +30,7 @@ on:
 env:
  HOME: /root
  PYTHONUNBUFFERED: true
+ CLIENT: ${{github.event.inputs.CLIENT}}
  CLUSTER: ${{github.event.inputs.CLUSTER}}
  NODES: ${{github.event.inputs.NODES}}
  PULLSECRET: ${{github.event.inputs.PULLSECRET}}
@@ -51,7 +56,7 @@ jobs:
        - name: Clean up
          continue-on-error: true
          run: |
-           kcli delete plan --yes $CLUSTER || true
+           kcli -C $CLIENT delete plan --yes $CLUSTER || true
            aicli delete cluster $CLUSTER || true
 
     deploy-kcli-plan:
@@ -60,7 +65,7 @@ jobs:
       steps:
       - name: Deploy kcli plan
         run: |
-          kcli create plan -P nodes=$NODES $EXTRAPARAMS $CLUSTER
+          kcli -C $CLIENT create plan -P nodes=$NODES $EXTRAPARAMS $CLUSTER
 
     deploy-ai-cluster:
       needs: deploy-kcli-plan

@@ -28,7 +28,7 @@ jobs:
        - name: Clean up
          continue-on-error: true
          run: |
-           kcli delete plan --yes $CLUSTER || true
+           kcli -C local delete plan --yes $CLUSTER || true
            systemctl restart sushy
 
     deploy-kcli-plan:
@@ -37,7 +37,7 @@ jobs:
       steps:
       - name: Deploy kcli plan
         run: |
-          kcli create plan -P nodes=$NODES $CLUSTER
+          kcli -C local create plan -P nodes=$NODES $CLUSTER
 
     deploy-ai-cluster:
       needs: deploy-kcli-plan
@@ -53,4 +53,4 @@ jobs:
       steps:
       - name: Clean everything after success
         run: |
-          kcli delete plan --yes $CLUSTER
+          kcli -C local delete plan --yes $CLUSTER

@@ -32,7 +32,7 @@ Note that for relocating such a virtual cluster, masters would have to been expo
 Support for relocation is present in aicli so we can deploy such a cluster with a parameter file such as [this one](aicli_parameters.yml) and optionally creating vms first 
 
 ```
-kcli create plan -f aicli_kcli_plan.yml
+kcli create plan -f kcli_plan.yml
 aicli create deployment --pf aicli_parameters.yml relocate
 
 ```

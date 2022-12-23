@@ -50,9 +50,9 @@ jobs:
        - name: Install kcli
          run: |
            curl https://raw.githubusercontent.com/karmab/kcli/master/install.sh | bash
+           kcli create sushy-service
        - name: Install aicli
-         run: |
-           pip3 install -U assisted-service-client aicli
+         run: pip3 install -U assisted-service-client aicli
        - name: Clean up
          continue-on-error: true
          run: |
@@ -64,13 +64,11 @@ jobs:
       runs-on: libvirt
       steps:
       - name: Deploy kcli plan
-        run: |
-          kcli -C $CLIENT create plan -P nodes=$NODES $EXTRAPARAMS $CLUSTER
+        run: kcli -C $CLIENT create plan -P nodes=$NODES $EXTRAPARAMS $CLUSTER
 
     deploy-ai-cluster:
       needs: deploy-kcli-plan
       runs-on: libvirt
       steps:
       - name: Deploy ai cluster
-        run: |
-          aicli create deployment --pf $PARAMFILE -P pull_secret=$PULLSECRET $EXTRAPARAMS $CLUSTER --force
+        run: aicli create deployment --pf $PARAMFILE -P pull_secret=$PULLSECRET $EXTRAPARAMS $CLUSTER --force

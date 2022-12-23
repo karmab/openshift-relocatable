@@ -1,5 +1,5 @@
 parameters:
- cluster: relocatable
+ cluster: relocate
  nodes: 3
  network: default
  memory: 40960

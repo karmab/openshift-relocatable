@@ -6,15 +6,15 @@ ingress_ip: 192.168.122.252
 bmc_user: admin
 bmc_password: admin
 hosts:
-- name: relocate-master-0
+- name: relocate-ctlplane-0
   role: master
   bmc_url: http://192.168.122.1:9000/redfish/v1/Systems/local/relocate-node-0
   mac: aa:aa:aa:aa:dd:01
-- name: relocate-master-1
+- name: relocate-ctlplane-1
   role: master
   bmc_url: http://192.168.122.1:9000/redfish/v1/Systems/local/relocate-node-1
   mac: aa:aa:aa:aa:dd:02
-- name: relocate-master-2
+- name: relocate-ctlplane-2
   role: master
   bmc_url: http://192.168.122.1:9000/redfish/v1/Systems/local/relocate-node-2
   mac: aa:aa:aa:aa:dd:03

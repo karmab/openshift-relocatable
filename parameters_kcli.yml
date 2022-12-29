@@ -1,12 +1,12 @@
 cluster: relocate
 domain: karmalabs.corp
 network_type: OVNKubernetes
-masters: 3
+ctlplanes: 3
 workers: 0
 version: stable
 tag: 4.11
 numcpus: 16
-master_memory: 28672
+ctlplane_memory: 28672
 worker_memory: 28672
 bootstrap_memory: 8192
 disk_size: 40
@@ -22,18 +22,18 @@ vmrules:
    cmds:
    - nmcli connection modify "Wired connection 1" +ipv4.addresses 192.168.7.9/24 ipv4.method auto
    - nmcli dev reapply ens3
-- relocate-master-0:
+- relocate-ctlplane-0:
    cmdline: relocateip=192.168.7.10 relocatenetmask=24
-- relocate-master-1:
+- relocate-ctlplane-1:
    cmdline: relocateip=192.168.7.11 relocatenetmask=24
-- relocate-master-2:
+- relocate-ctlplane-2:
    cmdline: relocateip=192.168.7.12 relocatenetmask=24
 manifests:
 - 10-relocate-ip.yaml: |
     apiVersion: machineconfiguration.openshift.io/v1
     kind: MachineConfig
     metadata:
-      name: relocate-master
+      name: relocate-ctlplane
       labels:
         machineconfiguration.openshift.io/role: master
     spec:

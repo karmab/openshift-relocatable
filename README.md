@@ -25,7 +25,7 @@ ip addr add 192.168.7.1/24 dev virbr0
 kcli create cluster openshift --pf params_kcli.yml relocate
 
 ```
-Note that for relocating such a virtual cluster, ctlplanes would have to been exported/imported.
+Note that for relocating such a virtual cluster, ctlplanes would need to bee exported/imported.
 
 ### aicli
 

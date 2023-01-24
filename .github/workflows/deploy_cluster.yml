@@ -64,7 +64,7 @@ jobs:
       runs-on: libvirt
       steps:
       - name: Deploy kcli plan
-        run: kcli -C $CLIENT create plan -P nodes=$NODES $EXTRAPARAMS $CLUSTER
+        run: kcli -C $CLIENT create plan -P nodes=$NODES $EXTRAPARAMS -P cluster=$CLUSTER $CLUSTER
 
     deploy-ai-cluster:
       needs: deploy-kcli-plan

@@ -11,7 +11,6 @@ parameters:
 {{ cluster }}-node-{{ num }}:
  memory: {{ memory }}
  numcpus: {{ numcpus }}
- uuid: 51111111-1111-1111-1111-11111111118{{ num + 1 }}
  cluster: {{ cluster }}
  user: core
  uefi: true

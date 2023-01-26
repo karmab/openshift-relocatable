@@ -1,0 +1,22 @@
+base_dns_domain: karmalabs.corp
+openshift_version: 4.12
+relocate: true
+relocate_cidr: 192.168.8.0/24
+minimal: true
+api_ip: 192.168.122.251
+ingress_ip: 192.168.122.250
+bmc_user: admin
+bmc_password: admin
+hosts:
+- name: relocate2-ctlplane-0
+  role: master
+  bmc_url: http://192.168.122.1:9000/redfish/v1/Systems/local/relocate2-node-0
+  mac: bb:aa:aa:aa:dd:01
+- name: relocate2-ctlplane-1
+  role: master
+  bmc_url: http://192.168.122.1:9000/redfish/v1/Systems/local/relocate2-node-1
+  mac: bb:aa:aa:aa:dd:02
+- name: relocate2-ctlplane-2
+  role: master
+  bmc_url: http://192.168.122.1:9000/redfish/v1/Systems/local/relocate2-node-2
+  mac: bb:aa:aa:aa:dd:03

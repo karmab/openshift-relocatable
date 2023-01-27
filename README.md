@@ -7,7 +7,7 @@ The cluster will use a private network cidr (Our example uses 192.168.7.0/24) an
 For all the nodes of the cluster, we:
 
 - set a static with the private cidr on top of the default nic. This is achieved with a systemd unit that adds the configuration after br-ex bridge is set and before crio and kubelet start. Each node is launched with extra kernel arguments, `relocateip` and `relocatenetmask` and a [a machineconfig](10-relocate-ip.yml.sample) that leverages script `relocate-ip.sh`
-- configure kubelet to use the corresponding static ip. For this, a machine config creating the file `/etc/default/nodeip-configuration` with content such as `KUBELET_NODEIP_HINT=192.168.7.0` can be injected.
+- configure kubelet to use the corresponding static ip. For this, the relocate-ip.sh script also writes the ip to /etc/systemd/system/kubelet.service.d/30-nodenet.conf and /etc/systemd/system/crio.service.d/30-nodenet.conf
 - set api vip and ingress vip using the private cidr
 - deploy metallb operator deployed and configure two services using public vips pointing to api and ingress
 - optionally deploy an embedded registry using storage on the node (typically odf or lvmo)

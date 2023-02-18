@@ -1,0 +1,4 @@
+network: default
+cidr: 192.168.122.0/24
+api_ip: 192.168.122.253
+ingress_ip: 192.168.122.252

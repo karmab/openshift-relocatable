@@ -1,5 +1,6 @@
 parameters:
  cluster: relocate
+ network: relocate
  nodes: 3
  memory: 40960
  numcpus: 16
@@ -7,11 +8,11 @@ parameters:
  mac_prefix: aa:aa:aa:aa:dd
  cidr: 192.168.130.0/24
 
-{{ cluster }}:
+{{ network }}:
   type: network
   cidr: {{ cidr }}
-  dhcp_start: 192.168.130.2
-  dhcp_end: 192.168.130.251
+  dhcp_start: {{ cidr|network_ip(2) }}
+  dhcp_end: {{ cidr|network_ip(-5) }}
 
 {% for num in range(0,nodes) %}
 {{ cluster }}-node-{{ num }}:
@@ -25,6 +26,6 @@ parameters:
  - {{ disk_size }}
  - {{ disk_size }}
  nets:
- - name: {{ cluster }}
+ - name: {{ network }}
    mac: {{ mac_prefix + ":" + "%02.d" | format(num + 1)| string }}
 {% endfor %}

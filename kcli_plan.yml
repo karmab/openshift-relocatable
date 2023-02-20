@@ -1,12 +1,12 @@
 parameters:
  cluster: relocate
- network: relocate
+ network: default
  nodes: 3
  memory: 40960
  numcpus: 16
  disk_size: 100
  mac_prefix: aa:aa:aa:aa:dd
- cidr: 192.168.130.0/24
+ cidr: 192.168.122.0/24
 
 {{ network }}:
   type: network

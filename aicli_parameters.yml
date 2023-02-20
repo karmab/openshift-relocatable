@@ -1,8 +1,8 @@
 base_dns_domain: karmalabs.corp
 relocate: true
 minimal: true
-api_ip: 192.168.130.253
-ingress_ip: 192.168.130.252
+api_ip: 192.168.122.251
+ingress_ip: 192.168.122.250
 bmc_user: admin
 bmc_password: admin
 hosts:

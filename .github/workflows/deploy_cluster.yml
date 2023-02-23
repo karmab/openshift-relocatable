@@ -74,6 +74,7 @@ jobs:
     deploy-ai-cluster:
       needs: deploy-kcli-plan
       runs-on: libvirt
+      timeout-minutes: 90
       steps:
       - name: Deploy ai cluster
         run: aicli create deployment --pf $PARAMFILE -P pull_secret=$PULLSECRET $EXTRAPARAMS $CLUSTER --force

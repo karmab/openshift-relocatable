@@ -46,6 +46,7 @@ jobs:
     clean-up:
       needs: deploy-ai-cluster
       runs-on: libvirt
+      timeout-minutes: 90
       steps:
       - name: Clean everything after success
         run: kcli -C local delete plan --yes $CLUSTER

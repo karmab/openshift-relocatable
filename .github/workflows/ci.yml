@@ -6,6 +6,7 @@ jobs:
   run-workflow:
     name: CI workflow
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
